@@ -1,0 +1,43 @@
+# Paper Research Tool — AI Configuration
+# Copy this file to config.yaml and fill in your API Key
+# cp config.example.yaml config.yaml
+
+# AI 模型設定（四選一）
+ai:
+  # 使用哪個 AI？填 openai / anthropic / gemini / ollama
+  # 不填的話會自動偵測（有 Key 就用雲端，沒有就找 Ollama）
+  # provider: openai
+
+  # 選項 1：OpenAI（GPT-4o-mini 最便宜好用）
+  # 💰 需儲值，每次分析約 $0.01 美金
+  # 📊 品質最穩定，學術寫作表現優秀
+  openai:
+    api_key: ""           # 從 https://platform.openai.com/api-keys 取得
+    model: "gpt-4o-mini"  # 推薦：gpt-4o-mini（便宜）或 gpt-4o（更強）
+
+  # 選項 2：Anthropic Claude
+  # 💰 需儲值，每次分析約 $0.01 美金
+  # 📊 長文分析與細膩推理最強
+  anthropic:
+    api_key: ""                      # 從 https://console.anthropic.com/ 取得
+    model: "claude-sonnet-4-20250514"  # 推薦：claude-sonnet-4-20250514
+
+  # 選項 3：Google Gemini（⭐ 有免費額度！新手推薦）
+  # 💰 每日免費額度（免費方案每分鐘 15 次請求），超過才需付費
+  # 📊 速度快，多語言表現好，入門門檻最低
+  gemini:
+    api_key: ""                # 從 https://aistudio.google.com/apikey 取得（免費）
+    model: "gemini-2.0-flash"  # 推薦：gemini-2.0-flash（免費快速）或 gemini-2.5-pro（更強）
+
+  # 選項 4：Ollama 本地模型（完全免費，不需 API Key，不需網路）
+  # 💰 完全免費，資料不上傳
+  # 📊 品質取決於模型大小，需要至少 8GB RAM
+  # 安裝：https://ollama.ai → ollama pull llama3 → ollama serve
+  ollama:
+    model: "llama3"
+    base_url: "http://localhost:11434"
+
+# 預設設定
+defaults:
+  output_dir: "./output"
+  language: "zh-TW"
