@@ -169,10 +169,10 @@ def cmd_config(args, config) -> int:
     """Show/set configuration."""
     if args.show:
         console.print(f"[bold]{t('config_header')}[/bold]")
-        oai_status = t("config_set") if config.get("openai_api_key") else t("config_not_set")
-        ant_status = t("config_set") if config.get("anthropic_api_key") else t("config_not_set")
-        console.print(f"OpenAI API Key: {oai_status}")
-        console.print(f"Anthropic API Key: {ant_status}")
+        for name, key in [("OpenAI", "openai_api_key"), ("Anthropic", "anthropic_api_key"),
+                          ("Google Gemini", "google_api_key"), ("OpenRouter", "openrouter_api_key")]:
+            status = t("config_set") if config.get(key) else t("config_not_set")
+            console.print(f"{name} API Key: {status}")
         console.print(t("config_provider", provider=config.get("default_provider", "openai")))
         console.print(t("config_language", lang=config.get("language", "zh-TW")))
         return 0
@@ -184,6 +184,14 @@ def cmd_config(args, config) -> int:
     if args.anthropic_key:
         config.set("anthropic_api_key", args.anthropic_key)
         console.print(f"[green]{t('anthropic_key_saved')}[/green]")
+
+    if args.google_key:
+        config.set("google_api_key", args.google_key)
+        console.print(f"[green]{t('google_key_saved')}[/green]")
+
+    if args.openrouter_key:
+        config.set("openrouter_api_key", args.openrouter_key)
+        console.print(f"[green]{t('openrouter_key_saved')}[/green]")
 
     return 0
 
@@ -242,6 +250,8 @@ def main():
     p_config.add_argument("--show", "-s", action="store_true", help=c("config_show_help"))
     p_config.add_argument("--openai-key", help=c("config_openai_help"))
     p_config.add_argument("--anthropic-key", help=c("config_anthropic_help"))
+    p_config.add_argument("--google-key", help=c("config_google_help"))
+    p_config.add_argument("--openrouter-key", help=c("config_openrouter_help"))
 
     args = parser.parse_args()
 

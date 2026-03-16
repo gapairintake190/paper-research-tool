@@ -12,7 +12,7 @@
 ## 功能特色
 
 - **PDF 解析** - 從 PDF 檔案擷取全文
-- **AI 摘要** - 透過 OpenAI / Anthropic API 生成結構化摘要
+- **AI 摘要** - 透過 OpenAI / Anthropic / Google Gemini / OpenRouter 生成結構化摘要
 - **Markdown 知識庫** - 本機論文管理，含標籤、元資料、搜尋
 - **論文關聯分析** - 分析論文之間的連結
 - **三語支援** - 完整支援繁體中文、English、한국어
@@ -32,9 +32,14 @@ pip install -r requirements.txt
 ### 設定 API Key
 
 ```bash
+# 選一個就好，推薦 Gemini（有免費額度）
+python3 paper_tool.py config --google-key "AI..."
+# 或
 python3 paper_tool.py config --openai-key "sk-..."
 # 或
 python3 paper_tool.py config --anthropic-key "sk-ant-..."
+# 或
+python3 paper_tool.py config --openrouter-key "sk-or-..."
 ```
 
 ### 設定語言
@@ -92,7 +97,7 @@ python3 paper_tool.py config --show
 
 - **Python 3.10+**
 - [pdfplumber](https://github.com/jsvine/pdfplumber) - PDF 擷取
-- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) - AI 摘要
+- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) / [Google Gemini](https://aistudio.google.com/) / [OpenRouter](https://openrouter.ai/) - AI 摘要
 - [Rich](https://github.com/Textualize/rich) - CLI 格式化
 - [PyYAML](https://pyyaml.org/) - 設定檔管理
 
@@ -100,12 +105,14 @@ python3 paper_tool.py config --show
 
 | | 免費版（本工具） | Pro 版 |
 |---|---|---|
-| 每次分析論文數 | 最多 3 篇 | 最多 50 篇 |
-| 每篇擷取字數 | 15K 字元 | 50K 字元 |
+| 每次分析論文數 | 1 篇 | 最多 50 篇 |
+| 每篇擷取字數 | 12K 字元 | 50K 字元 |
+| AI 供應商 | 4 家（OpenAI、Anthropic、Gemini、OpenRouter） | 4 家（相同） |
 | 分析框架 | 3 種 | 5 種（+影響力分析 +方法論評估） |
 | 主題分群 | - | ✅ AI 自動分群 |
 | 跨論文辯論 | - | ✅ 結構化辯論 |
 | 引用關係圖 | - | ✅ Mermaid 圖表 |
+| 研究缺口偵測 | - | ✅ |
 | Notion 整合 | - | ✅ 4 個資料庫 + 自動同步 |
 | PDF 支援 | ✅ | ✅ |
 | 三語輸出 | ✅ | ✅ |

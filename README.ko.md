@@ -12,7 +12,7 @@
 ## 기능
 
 - **PDF 파싱** - PDF 파일에서 전체 텍스트 추출
-- **AI 요약** - OpenAI / Anthropic API를 통한 구조화된 요약
+- **AI 요약** - OpenAI / Anthropic / Google Gemini / OpenRouter를 통한 구조화된 요약
 - **Markdown 지식 베이스** - 태그, 메타데이터, 검색이 포함된 로컬 논문 관리
 - **논문 관계 분석** - 논문 간 연결 분석
 - **3개 국어 지원** - 繁體中文, English, 한국어 완벽 지원
@@ -32,9 +32,14 @@ pip install -r requirements.txt
 ### API 키 설정
 
 ```bash
+# 하나만 선택 — Gemini 추천 (무료 제공)
+python3 paper_tool.py config --google-key "AI..."
+# 또는
 python3 paper_tool.py config --openai-key "sk-..."
 # 또는
 python3 paper_tool.py config --anthropic-key "sk-ant-..."
+# 또는
+python3 paper_tool.py config --openrouter-key "sk-or-..."
 ```
 
 ### 언어 설정
@@ -92,7 +97,7 @@ python3 paper_tool.py config --show
 
 - **Python 3.10+**
 - [pdfplumber](https://github.com/jsvine/pdfplumber) - PDF 추출
-- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) - AI 요약
+- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) / [Google Gemini](https://aistudio.google.com/) / [OpenRouter](https://openrouter.ai/) - AI 요약
 - [Rich](https://github.com/Textualize/rich) - CLI 포맷팅
 - [PyYAML](https://pyyaml.org/) - 설정 관리
 
@@ -100,12 +105,14 @@ python3 paper_tool.py config --show
 
 | | 무료 (이 도구) | Pro |
 |---|---|---|
-| 분석당 논문 수 | 최대 3편 | 최대 50편 |
-| 논문당 추출 길이 | 15K 자 | 50K 자 |
+| 분석당 논문 수 | 1편 | 최대 50편 |
+| 논문당 추출 길이 | 12K 자 | 50K 자 |
+| AI 제공자 | 4개 (OpenAI, Anthropic, Gemini, OpenRouter) | 4개 (동일) |
 | 분석 프레임워크 | 3가지 | 5가지 (+영향력 분석 +방법론 평가) |
 | 주제 군집화 | - | ✅ AI 자동 분류 |
 | 논문 간 토론 | - | ✅ 구조화된 토론 |
 | 인용 그래프 | - | ✅ Mermaid 다이어그램 |
+| 연구 갭 탐지 | - | ✅ |
 | Notion 통합 | - | ✅ 4개 DB + 자동 동기화 |
 | PDF 지원 | ✅ | ✅ |
 | 3개 국어 | ✅ | ✅ |

@@ -9,6 +9,7 @@ from typing import Any, Optional
 
 
 SUPPORTED_LANGUAGES = ("zh-TW", "en", "ko")
+SUPPORTED_PROVIDERS = ("openai", "anthropic", "google", "openrouter")
 
 LANGUAGES = {
     "zh-TW": "繁體中文",
@@ -23,6 +24,8 @@ class Config:
     DEFAULT_CONFIG = {
         "openai_api_key": "",
         "anthropic_api_key": "",
+        "google_api_key": "",
+        "openrouter_api_key": "",
         "default_provider": "openai",
         "kb_path": "~/.paper_research/kb",
         "language": "zh-TW",

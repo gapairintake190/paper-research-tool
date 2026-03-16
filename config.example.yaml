@@ -1,14 +1,14 @@
 # Paper Research Tool - Configuration
 # Copy this file to config.yaml and fill in your API keys
 
-# OpenAI API Key (from https://platform.openai.com/api-keys)
-openai_api_key: "sk-your-openai-key-here"
+# Default AI Provider (openai / anthropic / google / openrouter)
+default_provider: "google"
 
-# Anthropic API Key (from https://console.anthropic.com/keys)
-anthropic_api_key: "sk-ant-your-anthropic-key-here"
-
-# Default AI Provider (openai / anthropic)
-default_provider: "openai"
+# API Keys — only need to fill in the one you use
+openai_api_key: ""        # https://platform.openai.com/api-keys
+anthropic_api_key: ""     # https://console.anthropic.com/keys
+google_api_key: ""        # https://aistudio.google.com/apikey (free tier available)
+openrouter_api_key: ""    # https://openrouter.ai/keys
 
 # Output language / 輸出語言 / 출력 언어
 # Options: zh-TW (繁體中文) | en (English) | ko (한국어)
@@ -17,6 +17,8 @@ language: "zh-TW"
 # Knowledge base path (optional)
 kb_path: "~/.paper_research/kb"
 
-# Model override (optional)
-openai_model: "gpt-4o-mini"
-anthropic_model: "claude-3-haiku-20240307"
+# Model override (optional, uses sensible defaults if empty)
+# openai_model: "gpt-4o-mini"
+# anthropic_model: "claude-3-haiku-20240307"
+# google_model: "gemini-2.0-flash"
+# openrouter_model: "anthropic/claude-sonnet-4-20250514"

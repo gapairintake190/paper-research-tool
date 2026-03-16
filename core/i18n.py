@@ -95,6 +95,16 @@ CLI = {
         "en":    "Set Anthropic API Key",
         "ko":    "Anthropic API Key 설정",
     },
+    "config_google_help": {
+        "zh-TW": "設定 Google Gemini API Key",
+        "en":    "Set Google Gemini API Key",
+        "ko":    "Google Gemini API Key 설정",
+    },
+    "config_openrouter_help": {
+        "zh-TW": "設定 OpenRouter API Key",
+        "en":    "Set OpenRouter API Key",
+        "ko":    "OpenRouter API Key 설정",
+    },
     "lang_help": {
         "zh-TW": "輸出語言（zh-TW/en/ko）",
         "en":    "Output language (zh-TW/en/ko)",
@@ -125,9 +135,9 @@ MSG = {
         "ko":    "PDF 추출 오류: {error}",
     },
     "no_api_key": {
-        "zh-TW": "錯誤：請先設定 API Key（使用 config --openai-key 或 --anthropic-key）",
-        "en":    "Error: Please set API Key first (use config --openai-key or --anthropic-key)",
-        "ko":    "오류: 먼저 API Key를 설정하세요 (config --openai-key 또는 --anthropic-key 사용)",
+        "zh-TW": "錯誤：請先在 config.yaml 設定 API Key",
+        "en":    "Error: Please set API Key in config.yaml first",
+        "ko":    "오류: 먼저 config.yaml에 API Key를 설정하세요",
     },
     "openai_error": {
         "zh-TW": "OpenAI API 錯誤: {error}",
@@ -170,6 +180,16 @@ MSG = {
         "zh-TW": "✓ Anthropic API Key 已儲存",
         "en":    "✓ Anthropic API Key saved",
         "ko":    "✓ Anthropic API Key 저장됨",
+    },
+    "google_key_saved": {
+        "zh-TW": "✓ Google Gemini API Key 已儲存",
+        "en":    "✓ Google Gemini API Key saved",
+        "ko":    "✓ Google Gemini API Key 저장됨",
+    },
+    "openrouter_key_saved": {
+        "zh-TW": "✓ OpenRouter API Key 已儲存",
+        "en":    "✓ OpenRouter API Key saved",
+        "ko":    "✓ OpenRouter API Key 저장됨",
     },
     # ── list/search ──
     "kb_empty": {

@@ -12,7 +12,7 @@
 ## Features
 
 - **PDF Parsing** - Extract full text from PDF files
-- **AI Summary** - Structured summaries via OpenAI / Anthropic API
+- **AI Summary** - Structured summaries via OpenAI / Anthropic / Google Gemini / OpenRouter
 - **Markdown Knowledge Base** - Local paper management with metadata, tags, and search
 - **Paper Relations** - Analyze connections between papers
 - **Trilingual** - Full support for 繁體中文, English, 한국어
@@ -32,9 +32,14 @@ pip install -r requirements.txt
 ### Set API Key
 
 ```bash
+# Pick one — Gemini recommended (has free tier)
+python3 paper_tool.py config --google-key "AI..."
+# or
 python3 paper_tool.py config --openai-key "sk-..."
 # or
 python3 paper_tool.py config --anthropic-key "sk-ant-..."
+# or
+python3 paper_tool.py config --openrouter-key "sk-or-..."
 ```
 
 ### Set Language
@@ -114,7 +119,7 @@ paper-research-tool/
 
 - **Python 3.10+**
 - [pdfplumber](https://github.com/jsvine/pdfplumber) - PDF extraction
-- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) - AI summary
+- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) / [Google Gemini](https://aistudio.google.com/) / [OpenRouter](https://openrouter.ai/) - AI summary
 - [Rich](https://github.com/Textualize/rich) - CLI formatting
 - [PyYAML](https://pyyaml.org/) - Configuration
 
@@ -134,12 +139,14 @@ All user-facing text, prompts, and AI system messages support three languages:
 
 | | Free (this tool) | Pro |
 |---|---|---|
-| Papers per analysis | 3 max | 50 max |
-| Content per paper | 15K chars | 50K chars |
+| Papers per analysis | 1 | 50 max |
+| Content per paper | 12K chars | 50K chars |
+| AI providers | 4 (OpenAI, Anthropic, Gemini, OpenRouter) | 4 (same) |
 | Analysis frameworks | 3 | 5 (+impact, +methodology evaluation) |
 | Topic clustering | - | ✅ AI-powered |
 | Cross-paper debate | - | ✅ Structured |
 | Citation graph | - | ✅ Mermaid diagrams |
+| Research gap detection | - | ✅ |
 | Notion integration | - | ✅ 4 databases + auto-sync |
 | PDF support | ✅ | ✅ |
 | Trilingual | ✅ | ✅ |
