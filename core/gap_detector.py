@@ -1,5 +1,5 @@
 """
-Gap Detector — 研究缺口偵測（免費版：最多 3 篇）
+Gap Detector — Research gap detection (free: up to 3 papers)
 """
 
 from typing import List
@@ -23,8 +23,8 @@ def detect_research_gaps(papers: List[str], domain: str) -> str:
         Gap analysis report in markdown
     """
     if len(papers) > FREE_PAPER_LIMIT:
-        print(f"⚠ 免費版一次最多分析 {FREE_PAPER_LIMIT} 篇論文，已自動截取前 {FREE_PAPER_LIMIT} 篇。")
-        print(f"  升級 Pro 版可一次分析最多 50 篇：https://judyailab.com/products")
+        print(f"⚠ Free version supports up to {FREE_PAPER_LIMIT} papers. Using the first {FREE_PAPER_LIMIT}.")
+        print(f"  Upgrade to Pro for up to 50 papers: https://judyailab.com/products")
         papers = papers[:FREE_PAPER_LIMIT]
 
     # Read paper contents
@@ -32,7 +32,7 @@ def detect_research_gaps(papers: List[str], domain: str) -> str:
     for i, paper in enumerate(papers, 1):
         content = read_paper(paper)
         paper_contents.append(f"--- Paper {i} ---\n{content}")
-        print(f"  ✓ 讀取論文 {i}/{len(papers)}: {paper}")
+        print(f"  ✓ Reading paper {i}/{len(papers)}: {paper}")
 
     paper_text = "\n\n".join(paper_contents)
 
@@ -92,36 +92,8 @@ def detect_research_gaps(papers: List[str], domain: str) -> str:
 {paper_text}"""
 
     config = load_config()
-    print(f"  🤖 正在用 AI 偵測研究缺口...")
+    print(f"  🤖 Detecting research gaps with AI...")
     result = call_ai(prompt, config)
     return result
-
-
-def generate_research_questions(papers: List[str], domain: str) -> str:
-    """Generate specific research questions from papers."""
-    if len(papers) > FREE_PAPER_LIMIT:
-        papers = papers[:FREE_PAPER_LIMIT]
-
-    paper_contents = []
-    for i, paper in enumerate(papers, 1):
-        content = read_paper(paper)
-        paper_contents.append(f"--- Paper {i} ---\n{content}")
-
-    paper_text = "\n\n".join(paper_contents)
-
-    prompt = f"""根據以下「{domain}」領域的論文，生成 5-10 個具體的研究問題（Research Questions）。
-
-要求：
-- 每個問題必須具體、可操作、可研究
-- 包含可能的研究方法建議
-- 標明是探索性/驗證性/比較性問題
-- 使用 Markdown 格式
-
-以下是參考論文：
-
-{paper_text}"""
-
-    config = load_config()
-    return call_ai(prompt, config)
 
 

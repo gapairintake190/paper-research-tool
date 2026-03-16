@@ -1,5 +1,5 @@
 """
-Config Manager — 讀取 config.yaml 或環境變數
+Config Manager — Load config.yaml or environment variables
 """
 
 import copy
@@ -131,18 +131,18 @@ def get_ai_provider_info(config: dict) -> str:
     if provider == "openai":
         model = config["ai"]["openai"]["model"]
         has_key = bool(config["ai"]["openai"]["api_key"])
-        return f"OpenAI ({model}) — API Key: {'✓' if has_key else '✗ 未設定'}"
+        return f"OpenAI ({model}) — API Key: {'✓' if has_key else '✗ Not configured'}"
     elif provider == "anthropic":
         model = config["ai"]["anthropic"]["model"]
         has_key = bool(config["ai"]["anthropic"]["api_key"])
-        return f"Anthropic ({model}) — API Key: {'✓' if has_key else '✗ 未設定'}"
+        return f"Anthropic ({model}) — API Key: {'✓' if has_key else '✗ Not configured'}"
     elif provider == "gemini":
         model = config["ai"]["gemini"]["model"]
         has_key = bool(config["ai"]["gemini"]["api_key"])
-        return f"Google Gemini ({model}) — API Key: {'✓' if has_key else '✗ 未設定'}"
+        return f"Google Gemini ({model}) — API Key: {'✓' if has_key else '✗ Not configured'}"
     elif provider == "ollama":
         model = config["ai"]["ollama"]["model"]
         url = config["ai"]["ollama"]["base_url"]
         return f"Ollama ({model}) @ {url}"
     else:
-        return "未設定 AI — 請設定 config.yaml 或環境變數"
+        return "No AI configured — please set up config.yaml or environment variables"

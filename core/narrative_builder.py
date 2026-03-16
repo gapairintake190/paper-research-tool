@@ -1,10 +1,8 @@
 """
-Narrative Builder — 研究敘事脈絡分析（免費版：最多 3 篇，最少 2 篇）
+Narrative Builder — Research narrative analysis (free: 2-3 papers)
 
-解決痛點：學生能整理論文，但不知道怎麼把 paper 變成自己的研究脈絡。
-
-有 --my-topic 時：4 段完整分析 + 論文第一章骨架
-沒有 --my-topic 時：2 段分析 + 3 個研究切入點建議
+With --my-topic: 4-section analysis + Chapter 1 skeleton
+Without --my-topic: 2-section analysis + 3 research angle suggestions
 """
 
 from typing import List, Optional
@@ -34,34 +32,34 @@ def build_research_narrative(papers: List[str], my_topic: Optional[str] = None) 
     """
     if len(papers) < MIN_PAPERS:
         raise RuntimeError(
-            f"研究敘事至少需要 {MIN_PAPERS} 篇論文才能建立演進脈絡。\n"
-            f"  目前只有 {len(papers)} 篇。請再加幾篇相關論文。"
+            f"Research narrative requires at least {MIN_PAPERS} papers to establish evolution.\n"
+            f"  Currently only {len(papers)} paper(s) provided. Please add more related papers."
         )
 
     if len(papers) > FREE_PAPER_LIMIT:
-        print(f"⚠ 免費版一次最多分析 {FREE_PAPER_LIMIT} 篇論文，已自動截取前 {FREE_PAPER_LIMIT} 篇。")
-        print(f"  升級 Pro 版可一次分析最多 50 篇：https://judyailab.com/products")
+        print(f"⚠ Free version supports up to {FREE_PAPER_LIMIT} papers. Using the first {FREE_PAPER_LIMIT}.")
+        print(f"  Upgrade to Pro for up to 50 papers: https://judyailab.com/products")
         papers = papers[:FREE_PAPER_LIMIT]
 
     paper_contents = []
     for i, paper in enumerate(papers, 1):
         content = read_paper(paper)
         paper_contents.append(f"--- Paper {i} ---\n{content}")
-        print(f"  ✓ 讀取論文 {i}/{len(papers)}: {paper}")
+        print(f"  ✓ Reading paper {i}/{len(papers)}: {paper}")
 
     paper_text = "\n\n".join(paper_contents)
     num_papers = len(papers)
 
     if my_topic:
         if len(my_topic) > 500:
-            raise RuntimeError("研究主題過長（上限 500 字元）。請用簡短句子描述你的研究方向。")
+            raise RuntimeError("Topic too long (max 500 chars). Please use a concise description.")
         prompt = _build_narrative_prompt_with_topic(paper_text, my_topic.strip(), num_papers)
     else:
         prompt = _build_narrative_prompt_without_topic(paper_text, num_papers)
 
     config = load_config()
-    mode = f"完整敘事分析（主題：{my_topic}）" if my_topic else "脈絡探索（無指定主題）"
-    print(f"  🤖 正在用 AI 建構研究敘事脈絡 — {mode}...")
+    mode = f"full narrative (topic: {my_topic})" if my_topic else "exploration (no topic specified)"
+    print(f"  🤖 Building research narrative with AI — {mode}...")
     result = call_ai(prompt, config, max_tokens=6000)
     return result
 

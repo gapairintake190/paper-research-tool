@@ -1,5 +1,5 @@
 """
-AI Synthesizer — 文獻綜述生成（免費版：最多 3 篇）
+AI Synthesizer — Literature review generation (free: up to 3 papers)
 """
 
 from typing import List
@@ -23,8 +23,8 @@ def synthesize_literature_review(papers: List[str], topic: str) -> str:
         Markdown literature review
     """
     if len(papers) > FREE_PAPER_LIMIT:
-        print(f"⚠ 免費版一次最多分析 {FREE_PAPER_LIMIT} 篇論文，已自動截取前 {FREE_PAPER_LIMIT} 篇。")
-        print(f"  升級 Pro 版可一次分析最多 50 篇：https://judyailab.com/products")
+        print(f"⚠ Free version supports up to {FREE_PAPER_LIMIT} papers. Using the first {FREE_PAPER_LIMIT}.")
+        print(f"  Upgrade to Pro for up to 50 papers: https://judyailab.com/products")
         papers = papers[:FREE_PAPER_LIMIT]
 
     # Collect paper contents
@@ -32,7 +32,7 @@ def synthesize_literature_review(papers: List[str], topic: str) -> str:
     for i, paper in enumerate(papers, 1):
         content = read_paper(paper)
         paper_contents.append(f"--- Paper {i} ---\n{content}")
-        print(f"  ✓ 讀取論文 {i}/{len(papers)}: {paper}")
+        print(f"  ✓ Reading paper {i}/{len(papers)}: {paper}")
 
     paper_text = "\n\n".join(paper_contents)
 
@@ -57,7 +57,7 @@ def synthesize_literature_review(papers: List[str], topic: str) -> str:
 {paper_text}"""
 
     config = load_config()
-    print(f"  🤖 正在用 AI 生成文獻綜述...")
+    print(f"  🤖 Generating literature review with AI...")
     result = call_ai(prompt, config)
     return result
 

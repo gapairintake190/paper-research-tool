@@ -3,21 +3,8 @@
 TEMPLATES = {
     "literature_review": "Traditional literature review with thematic synthesis",
     "systematic": "PRISMA-style systematic review",
-    "argumentative": "Argumentative essay with thesis-antithesis-synthesis"
+    "argumentative": "Argumentative essay with thesis-antithesis-synthesis",
 }
-
-
-def get_template(template_name: str) -> str:
-    """Get writing template by name"""
-    
-    templates = {
-        "literature_review": TEMPLATE_LITERATURE_REVIEW,
-        "systematic": TEMPLATE_SYSTEMATIC,
-        "argumentative": TEMPLATE_ARGUMENTATIVE,
-        "progress": TEMPLATE_PROGRESS
-    }
-    
-    return templates.get(template_name, "")
 
 
 TEMPLATE_LITERATURE_REVIEW = """# Literature Review Template
@@ -179,56 +166,4 @@ TEMPLATE_ARGUMENTATIVE = """# Argumentative Essay Template
 - Future considerations
 
 ## References
-"""
-
-
-TEMPLATE_PROGRESS = """# Research Writing Progress Tracker
-
-## Project: [Title]
-
-### Timeline
-| Phase | Start | End | Status |
-|-------|-------|-----|--------|
-| Research | | | |
-| Outline | | | |
-| First Draft | | | |
-| Revision 1 | | | |
-| Revision 2 | | | |
-| Final Polish | | | |
-| Submission | | | |
-
-### Word Count Goals
-- Introduction: ___ / ___ words
-- Literature Review: ___ / ___ words
-- Methodology: ___ / ___ words
-- Results: ___ / ___ words
-- Discussion: ___ / ___ words
-- Conclusion: ___ / ___ words
-- **Total: ___ / ___ words**
-
-### Section Status
-- [ ] Introduction
-- [ ] Literature Review
-- [ ] Methodology
-- [ ] Results
-- [ ] Discussion
-- [ ] Abstract
-- [ ] References
-
-### Key Citations Needed
-1. 
-2. 
-3. 
-
-### Weekly Goals
-**Week of [date]:**
-- [ ] 
-- [ ] 
-
-### Blockers
-- 
--
-
-### Notes
--
 """

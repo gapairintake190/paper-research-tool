@@ -34,12 +34,12 @@ def call_ai(prompt: str, config: dict, max_tokens: int = 4096) -> str:
         return _call_ollama(prompt, config["ai"]["ollama"], max_tokens)
     else:
         raise RuntimeError(
-            "未設定 AI 模型。請執行以下任一步驟：\n"
-            "  1. 複製 config.example.yaml → config.yaml，填入 API Key\n"
-            "  2. 設定環境變數：export OPENAI_API_KEY=sk-...\n"
-            "     或 export GEMINI_API_KEY=... （Google 有免費額度）\n"
-            "  3. 安裝 Ollama 並啟動本地模型\n"
-            "詳見 docs/GETTING_STARTED.md"
+            "No AI model configured. Please do one of the following:\n"
+            "  1. cp config.example.yaml config.yaml — fill in your API key\n"
+            "  2. export OPENAI_API_KEY=sk-...\n"
+            "     or export GEMINI_API_KEY=... (Google offers a free tier)\n"
+            "  3. Install Ollama and start a local model\n"
+            "See docs/GETTING_STARTED.en.md for details."
         )
 
 
@@ -47,7 +47,7 @@ def _call_openai(prompt: str, cfg: dict, max_tokens: int) -> str:
     """Call OpenAI API."""
     api_key = cfg.get("api_key", "")
     if not api_key:
-        raise RuntimeError("OpenAI API Key 未設定。請在 config.yaml 或環境變數 OPENAI_API_KEY 設定。")
+        raise RuntimeError("OpenAI API key not set. Set it in config.yaml or export OPENAI_API_KEY.")
 
     model = cfg.get("model", "gpt-4o-mini")
 
@@ -76,16 +76,16 @@ def _call_openai(prompt: str, cfg: dict, max_tokens: int) -> str:
             return result["choices"][0]["message"]["content"]
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"OpenAI API 錯誤 ({e.code}): {body}")
+        raise RuntimeError(f"OpenAI API error ({e.code}): {body}")
     except urllib.error.URLError as e:
-        raise RuntimeError(f"無法連接 OpenAI API: {e.reason}")
+        raise RuntimeError(f"Cannot connect to OpenAI API: {e.reason}")
 
 
 def _call_anthropic(prompt: str, cfg: dict, max_tokens: int) -> str:
     """Call Anthropic Claude API."""
     api_key = cfg.get("api_key", "")
     if not api_key:
-        raise RuntimeError("Anthropic API Key 未設定。請在 config.yaml 或環境變數 ANTHROPIC_API_KEY 設定。")
+        raise RuntimeError("Anthropic API key not set. Set it in config.yaml or export ANTHROPIC_API_KEY.")
 
     model = cfg.get("model", "claude-sonnet-4-20250514")
 
@@ -115,16 +115,16 @@ def _call_anthropic(prompt: str, cfg: dict, max_tokens: int) -> str:
             return result["content"][0]["text"]
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"Anthropic API 錯誤 ({e.code}): {body}")
+        raise RuntimeError(f"Anthropic API error ({e.code}): {body}")
     except urllib.error.URLError as e:
-        raise RuntimeError(f"無法連接 Anthropic API: {e.reason}")
+        raise RuntimeError(f"Cannot connect to Anthropic API: {e.reason}")
 
 
 def _call_gemini(prompt: str, cfg: dict, max_tokens: int) -> str:
     """Call Google Gemini API."""
     api_key = cfg.get("api_key", "")
     if not api_key:
-        raise RuntimeError("Gemini API Key 未設定。請在 config.yaml 或環境變數 GEMINI_API_KEY 設定。")
+        raise RuntimeError("Gemini API key not set. Set it in config.yaml or export GEMINI_API_KEY.")
 
     model = cfg.get("model", "gemini-2.0-flash")
 
@@ -155,20 +155,20 @@ def _call_gemini(prompt: str, cfg: dict, max_tokens: int) -> str:
             result = json.loads(resp.read().decode("utf-8"))
             candidates = result.get("candidates", [])
             if not candidates:
-                raise RuntimeError("Gemini 未回傳任何結果。請確認 prompt 內容或換一個模型。")
+                raise RuntimeError("Gemini returned no results. Check your prompt or try a different model.")
             parts = candidates[0].get("content", {}).get("parts", [])
             return parts[0]["text"] if parts else ""
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
         if e.code == 400:
             raise RuntimeError(
-                f"Gemini API 錯誤 (400): API Key 無效或模型不支援。\n"
-                f"請確認 Key 正確：https://aistudio.google.com/apikey\n"
-                f"詳細: {body[:200]}"
+                f"Gemini API error (400): Invalid API key or unsupported model.\n"
+                f"Verify your key at: https://aistudio.google.com/apikey\n"
+                f"Details: {body[:200]}"
             )
-        raise RuntimeError(f"Gemini API 錯誤 ({e.code}): {body[:300]}")
+        raise RuntimeError(f"Gemini API error ({e.code}): {body[:300]}")
     except urllib.error.URLError as e:
-        raise RuntimeError(f"無法連接 Gemini API: {e.reason}")
+        raise RuntimeError(f"Cannot connect to Gemini API: {e.reason}")
 
 
 def _call_ollama(prompt: str, cfg: dict, max_tokens: int) -> str:
@@ -199,17 +199,17 @@ def _call_ollama(prompt: str, cfg: dict, max_tokens: int) -> str:
     except urllib.error.HTTPError as e:
         if e.code == 404:
             raise RuntimeError(
-                f"Ollama 模型 '{model}' 未安裝。\n"
-                f"請先下載模型：ollama pull {model}\n"
-                f"或換用其他模型（在 config.yaml 修改 ollama.model）"
+                f"Ollama model '{model}' not installed.\n"
+                f"Download it first: ollama pull {model}\n"
+                f"Or change the model in config.yaml (ollama.model)"
             )
         raise RuntimeError(
-            f"Ollama API 錯誤 ({e.code})。\n"
-            f"請確認 Ollama 正在運行：ollama serve"
+            f"Ollama API error ({e.code}).\n"
+            f"Make sure Ollama is running: ollama serve"
         )
     except urllib.error.URLError as e:
         raise RuntimeError(
-            f"無法連接 Ollama ({base_url})。\n"
-            f"請確認 Ollama 已啟動：ollama serve\n"
-            f"錯誤: {e.reason}"
+            f"Cannot connect to Ollama ({base_url}).\n"
+            f"Make sure Ollama is running: ollama serve\n"
+            f"Error: {e.reason}"
         )
