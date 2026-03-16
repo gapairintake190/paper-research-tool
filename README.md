@@ -1,166 +1,141 @@
 # Paper Research Tool
 
-> Academic Paper AI Research Assistant | 學術論文 AI 研究助手 | 학술 논문 AI 연구 도우미
+[![CI](https://github.com/JudyaiLab/paper-research-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/JudyaiLab/paper-research-tool/actions) [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+> AI-Powered Academic Paper Research Assistant | AI 驅動的學術論文研究助手 | AI 기반 학술 논문 연구 도우미
 
-**🌐 Language: [繁體中文](README.zh-TW.md) | English | [한국어](README.ko.md)**
+**Language: English | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)**
 
-**Paper Research Tool** is a free, open-source CLI tool that helps researchers quickly analyze and manage academic papers with AI.
+## What It Does
 
-## Features
+Upload a PDF (or paste an arXiv URL), pick your AI provider, and get a structured academic summary in your language. That's it.
 
-- **PDF Parsing** - Extract full text from PDF files
-- **AI Summary** - Structured summaries via OpenAI / Anthropic / Google Gemini / OpenRouter
-- **Markdown Knowledge Base** - Local paper management with metadata, tags, and search
-- **Paper Relations** - Analyze connections between papers
-- **Trilingual** - Full support for 繁體中文, English, 한국어
+- **4 AI providers** — OpenAI, Anthropic, Google Gemini, OpenRouter
+- **3 languages** — English, 繁體中文, 한국어
+- **Batch mode** — Summarize multiple papers at once
+- **arXiv support** — Paste an arXiv URL, get a summary
+- **Web UI** — Browser-based interface for non-technical users
+- **Knowledge base** — Save and search your analyzed papers locally
+- **CLI + Web** — Use from terminal or browser
 
 ## Quick Start
 
 ### Install
 
 ```bash
-git clone https://github.com/JudyAILab/paper-research-tool.git
+pip install paper-research-tool
+```
+
+Or from source:
+
+```bash
+git clone https://github.com/JudyaiLab/paper-research-tool.git
 cd paper-research-tool
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-### Set API Key
+### Set Up API Key
+
+Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey) (recommended — free tier available):
 
 ```bash
-# Pick one — Gemini recommended (has free tier)
-python3 paper_tool.py config --google-key "AI..."
-# or
-python3 paper_tool.py config --openai-key "sk-..."
-# or
-python3 paper_tool.py config --anthropic-key "sk-ant-..."
-# or
-python3 paper_tool.py config --openrouter-key "sk-or-..."
+python paper_tool.py config --google-key YOUR_KEY
 ```
 
-### Set Language
+Or use any other provider:
 
-Set `language` in `config.yaml`:
+```bash
+python paper_tool.py config --openai-key YOUR_KEY
+python paper_tool.py config --anthropic-key YOUR_KEY
+python paper_tool.py config --openrouter-key YOUR_KEY
+```
+
+### Use It
+
+```bash
+# Summarize a PDF
+python paper_tool.py summarize paper.pdf
+
+# Summarize multiple papers (batch mode)
+python paper_tool.py summarize paper1.pdf paper2.pdf paper3.pdf
+
+# Summarize from arXiv URL
+python paper_tool.py summarize https://arxiv.org/abs/2301.00001
+
+# Launch Web UI (browser-based)
+python paper_tool.py serve
+
+# Search your knowledge base
+python paper_tool.py search "transformer"
+
+# Switch language
+python paper_tool.py --lang en summarize paper.pdf
+python paper_tool.py --lang ko summarize paper.pdf
+```
+
+### Web UI
+
+For a graphical interface, install Gradio and launch:
+
+```bash
+pip install gradio
+python paper_tool.py serve
+```
+
+Then open http://127.0.0.1:7860 in your browser. Upload PDFs, choose your AI provider and language, and get results.
+
+## All Commands
+
+| Command | What it does |
+|---------|-------------|
+| `summarize` | AI-summarize one or more papers (PDF, arXiv URL) |
+| `add` | Add a paper to your local knowledge base |
+| `list` | List all saved papers |
+| `search` | Search your knowledge base |
+| `relate` | Analyze relationship between two papers |
+| `config` | View/set API keys and preferences |
+| `serve` | Launch browser-based Web UI |
+
+## Configuration
+
+Settings are stored in `~/.paper_research/config.yaml`:
 
 ```yaml
-# Options: zh-TW (繁體中文, default) | en (English) | ko (한국어)
-language: "zh-TW"
+default_provider: google       # openai | anthropic | google | openrouter
+google_api_key: "your-key"
+language: en                   # zh-TW | en | ko
 ```
-
-Or use `--lang` flag per command:
-
-```bash
-python3 paper_tool.py --lang en summarize paper.pdf
-python3 paper_tool.py --lang ko list
-```
-
-### Basic Usage
-
-```bash
-# Add paper to knowledge base
-python3 paper_tool.py add paper.pdf --tags "machine-learning,NLP"
-
-# AI summarize paper
-python3 paper_tool.py summarize paper.pdf
-
-# List all papers
-python3 paper_tool.py list
-
-# Search papers
-python3 paper_tool.py search "transformer"
-
-# Analyze relation between two papers
-python3 paper_tool.py relate paper1.md paper2.md
-
-# Show configuration
-python3 paper_tool.py config --show
-```
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `add <file>` | Add PDF to knowledge base |
-| `summarize <file>` | AI summarize paper |
-| `list` | List all papers |
-| `search <query>` | Search papers |
-| `relate <p1> <p2>` | Analyze paper relations |
-| `config` | Manage configuration |
-
-All commands support `--lang {zh-TW,en,ko}` to override the output language.
-
-## Project Structure
-
-```
-paper-research-tool/
-├── paper_tool.py          # CLI entry point
-├── core/
-│   ├── __init__.py
-│   ├── config.py          # Configuration manager
-│   ├── i18n.py            # Internationalization (zh-TW/en/ko)
-│   ├── pdf_parser.py      # PDF text extraction
-│   ├── ai_summarizer.py   # AI summary generation
-│   ├── knowledge_base.py  # Markdown knowledge base
-│   └── relation_graph.py  # Paper relation analysis
-├── prompts/
-│   ├── __init__.py
-│   ├── basic.yaml         # Trilingual prompt templates
-│   └── prompt_manager.py  # Prompt manager
-├── config.example.yaml    # Configuration template
-├── requirements.txt
-└── README.md
-```
-
-## Tech Stack
-
-- **Python 3.10+**
-- [pdfplumber](https://github.com/jsvine/pdfplumber) - PDF extraction
-- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) / [Google Gemini](https://aistudio.google.com/) / [OpenRouter](https://openrouter.ai/) - AI summary
-- [Rich](https://github.com/Textualize/rich) - CLI formatting
-- [PyYAML](https://pyyaml.org/) - Configuration
-
-## Language Support
-
-All user-facing text, prompts, and AI system messages support three languages:
-
-| Feature | zh-TW | en | ko |
-|---------|-------|----|----|
-| CLI help text | ✅ | ✅ | ✅ |
-| Error messages | ✅ | ✅ | ✅ |
-| AI prompts | ✅ | ✅ | ✅ |
-| AI system message | ✅ | ✅ | ✅ |
-| Knowledge base output | ✅ | ✅ | ✅ |
 
 ## Free vs Pro
 
-| | Free (this tool) | Pro |
-|---|---|---|
-| Papers per analysis | 1 | 50 max |
-| Content per paper | 12K chars | 50K chars |
-| AI providers | 4 (OpenAI, Anthropic, Gemini, OpenRouter) | 4 (same) |
-| Analysis frameworks | 3 | 5 (+impact, +methodology evaluation) |
-| Topic clustering | - | ✅ AI-powered |
-| Cross-paper debate | - | ✅ Structured |
-| Citation graph | - | ✅ Mermaid diagrams |
-| Research gap detection | - | ✅ |
-| Notion integration | - | ✅ 4 databases + auto-sync |
-| PDF support | ✅ | ✅ |
-| Trilingual | ✅ | ✅ |
+| Feature | Free | [Pro](https://judyailab.gumroad.com) |
+|---------|:----:|:----:|
+| AI Providers | 4 | 4 |
+| Papers per run | Batch | Batch (up to 50) |
+| Content per paper | 25K chars | 50K chars |
+| Analysis frameworks | 3 | 5 |
+| Literature review | Basic | Advanced (auto-batching) |
+| Web UI | Yes | Yes (all features) |
+| arXiv URL support | Yes | Yes |
+| Topic clustering | — | Yes |
+| Cross-paper debate | — | Yes |
+| Citation graph | — | Yes |
+| Research gap detection | — | Yes |
+| Notion sync | — | Yes (4 databases) |
+| Knowledge base | Yes | — |
+| Languages | 3 | 3 |
 
-> **Want more?** Check out [Paper Research Tool Pro](https://judyailab.gumroad.com/).
+## Testing
+
+```bash
+pip install pytest
+pytest tests/ -v
+```
 
 ## License
 
-MIT License - See [LICENSE](LICENSE)
-
-## Contributing
-
-Issues and Pull Requests are welcome!
+MIT — see [LICENSE](LICENSE)
 
 ---
 
-Made with ❤️ by [Judy AI Lab](https://judyailab.com) for researchers
+Made with care by [Judy AI Lab](https://judyailab.com) for researchers worldwide.

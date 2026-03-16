@@ -1,132 +1,130 @@
 # Paper Research Tool
 
-> 학술 논문 AI 연구 도우미
+[![CI](https://github.com/JudyaiLab/paper-research-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/JudyaiLab/paper-research-tool/actions) [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+> AI 기반 학술 논문 연구 도우미
 
-**🌐 Language: [繁體中文](README.zh-TW.md) | [English](README.md) | 한국어**
-
-**Paper Research Tool**은 연구자가 AI를 사용하여 학술 논문을 빠르게 분석하고 관리할 수 있도록 돕는 무료 오픈소스 CLI 도구입니다.
+**언어: [English](README.md) | [繁體中文](README.zh-TW.md) | 한국어**
 
 ## 기능
 
-- **PDF 파싱** - PDF 파일에서 전체 텍스트 추출
-- **AI 요약** - OpenAI / Anthropic / Google Gemini / OpenRouter를 통한 구조화된 요약
-- **Markdown 지식 베이스** - 태그, 메타데이터, 검색이 포함된 로컬 논문 관리
-- **논문 관계 분석** - 논문 간 연결 분석
-- **3개 국어 지원** - 繁體中文, English, 한국어 완벽 지원
+PDF를 업로드하거나 arXiv URL을 붙여넣고, AI 제공자를 선택하면 구조화된 학술 요약을 받을 수 있습니다.
+
+- **4개 AI 제공자** — OpenAI, Anthropic, Google Gemini, OpenRouter
+- **3개 언어** — English, 繁體中文, 한국어
+- **일괄 모드** — 여러 논문을 한 번에 요약
+- **arXiv 지원** — arXiv URL로 직접 분석
+- **Web UI** — 브라우저 기반 인터페이스
+- **지식 기반** — 분석한 논문을 로컬에 저장하고 검색
+- **CLI + Web** — 터미널 또는 브라우저에서 사용
 
 ## 빠른 시작
 
 ### 설치
 
 ```bash
-git clone https://github.com/JudyAILab/paper-research-tool.git
+pip install paper-research-tool
+```
+
+또는 소스에서:
+
+```bash
+git clone https://github.com/JudyaiLab/paper-research-tool.git
 cd paper-research-tool
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-### API 키 설정
+### API Key 설정
+
+Google Gemini 추천 (무료 제공):
 
 ```bash
-# 하나만 선택 — Gemini 추천 (무료 제공)
-python3 paper_tool.py config --google-key "AI..."
-# 또는
-python3 paper_tool.py config --openai-key "sk-..."
-# 또는
-python3 paper_tool.py config --anthropic-key "sk-ant-..."
-# 또는
-python3 paper_tool.py config --openrouter-key "sk-or-..."
+python paper_tool.py config --google-key YOUR_KEY
 ```
 
-### 언어 설정
-
-`config.yaml`에서 `language` 설정:
-
-```yaml
-# 옵션: zh-TW (繁體中文) | en (English, 기본값) | ko (한국어)
-language: "ko"
-```
-
-또는 `--lang` 플래그로 명령어별 언어 지정:
+다른 제공자:
 
 ```bash
-python3 paper_tool.py --lang en summarize paper.pdf
-python3 paper_tool.py --lang ko list
+python paper_tool.py config --openai-key YOUR_KEY
+python paper_tool.py config --anthropic-key YOUR_KEY
+python paper_tool.py config --openrouter-key YOUR_KEY
 ```
 
-### 기본 사용법
+### 사용법
 
 ```bash
-# 지식 베이스에 논문 추가
-python3 paper_tool.py add paper.pdf --tags "machine-learning,NLP"
+# 논문 하나 요약
+python paper_tool.py summarize paper.pdf
 
-# AI 논문 요약
-python3 paper_tool.py summarize paper.pdf
+# 여러 논문 일괄 요약
+python paper_tool.py summarize paper1.pdf paper2.pdf paper3.pdf
 
-# 모든 논문 목록
-python3 paper_tool.py list
+# arXiv URL로 요약
+python paper_tool.py summarize https://arxiv.org/abs/2301.00001
 
-# 논문 검색
-python3 paper_tool.py search "transformer"
+# Web UI 실행
+python paper_tool.py serve
 
-# 두 논문 간 관계 분석
-python3 paper_tool.py relate paper1.md paper2.md
+# 지식 기반 검색
+python paper_tool.py search "transformer"
 
-# 설정 표시
-python3 paper_tool.py config --show
+# 언어 전환
+python paper_tool.py --lang ko summarize paper.pdf
 ```
 
-## 명령어
+### Web UI
 
-| 명령어 | 설명 |
+Gradio를 설치한 후 브라우저 인터페이스를 사용할 수 있습니다:
+
+```bash
+pip install gradio
+python paper_tool.py serve
+```
+
+http://127.0.0.1:7860 을 열고 PDF를 업로드하고 AI와 언어를 선택하세요.
+
+## 모든 명령어
+
+| 명령어 | 기능 |
 |--------|------|
-| `add <file>` | 지식 베이스에 PDF 추가 |
-| `summarize <file>` | AI 논문 요약 |
-| `list` | 모든 논문 목록 |
-| `search <query>` | 논문 검색 |
-| `relate <p1> <p2>` | 논문 관계 분석 |
-| `config` | 설정 관리 |
-
-모든 명령어는 `--lang {zh-TW,en,ko}`로 출력 언어를 변경할 수 있습니다.
-
-## 기술 스택
-
-- **Python 3.10+**
-- [pdfplumber](https://github.com/jsvine/pdfplumber) - PDF 추출
-- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) / [Google Gemini](https://aistudio.google.com/) / [OpenRouter](https://openrouter.ai/) - AI 요약
-- [Rich](https://github.com/Textualize/rich) - CLI 포맷팅
-- [PyYAML](https://pyyaml.org/) - 설정 관리
+| `summarize` | AI 요약 (PDF, arXiv URL, 일괄 지원) |
+| `add` | 논문을 지식 기반에 추가 |
+| `list` | 모든 논문 나열 |
+| `search` | 지식 기반 검색 |
+| `relate` | 두 논문의 관계 분석 |
+| `config` | API Key 보기/설정 |
+| `serve` | Web UI 실행 |
 
 ## 무료 vs Pro
 
-| | 무료 (이 도구) | Pro |
-|---|---|---|
-| 분석당 논문 수 | 1편 | 최대 50편 |
-| 논문당 추출 길이 | 12K 자 | 50K 자 |
-| AI 제공자 | 4개 (OpenAI, Anthropic, Gemini, OpenRouter) | 4개 (동일) |
-| 분석 프레임워크 | 3가지 | 5가지 (+영향력 분석 +방법론 평가) |
-| 주제 군집화 | - | ✅ AI 자동 분류 |
-| 논문 간 토론 | - | ✅ 구조화된 토론 |
-| 인용 그래프 | - | ✅ Mermaid 다이어그램 |
-| 연구 갭 탐지 | - | ✅ |
-| Notion 통합 | - | ✅ 4개 DB + 자동 동기화 |
-| PDF 지원 | ✅ | ✅ |
-| 3개 국어 | ✅ | ✅ |
+| 기능 | 무료 | [Pro](https://judyailab.gumroad.com) |
+|------|:----:|:----:|
+| AI 제공자 | 4개 | 4개 |
+| 논문 수/회 | 일괄 | 일괄 (최대 50) |
+| 논문당 문자 | 25K | 50K |
+| 분석 프레임워크 | 3개 | 5개 |
+| 문헌 리뷰 | 기본 | 고급 (자동 배치) |
+| Web UI | 있음 | 있음 (전체 기능) |
+| arXiv 지원 | 있음 | 있음 |
+| 주제 클러스터링 | — | 있음 |
+| 논문 간 토론 | — | 있음 |
+| 인용 그래프 | — | 있음 |
+| 연구 갭 감지 | — | 있음 |
+| Notion 동기화 | — | 있음 (4개 DB) |
+| 지식 기반 | 있음 | — |
+| 언어 | 3개 | 3개 |
 
-> **더 많은 기능이 필요하신가요?** [Paper Research Tool Pro](https://judyailab.gumroad.com/)를 확인하세요.
+## 테스트
+
+```bash
+pip install pytest
+pytest tests/ -v
+```
 
 ## 라이선스
 
-MIT License - [LICENSE](LICENSE) 참조
-
-## 기여
-
-Issue와 Pull Request를 환영합니다!
+MIT — [LICENSE](LICENSE) 참조
 
 ---
 
-Made with ❤️ by [Judy AI Lab](https://judyailab.com) for researchers
+Made with care by [Judy AI Lab](https://judyailab.com)

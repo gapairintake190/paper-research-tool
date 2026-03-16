@@ -71,9 +71,9 @@ class AISummarizer:
                 model=model,
                 messages=[
                     {"role": "system", "content": system_msg},
-                    {"role": "user", "content": prompt + "\n\n" + text[:12000]}
+                    {"role": "user", "content": prompt + "\n\n" + text[:25000]}
                 ],
-                max_tokens=2000,
+                max_tokens=4000,
                 temperature=0.3,
             )
 
@@ -92,10 +92,10 @@ class AISummarizer:
 
             response = client.messages.create(
                 model=model,
-                max_tokens=2000,
+                max_tokens=4000,
                 system=system_msg,
                 messages=[
-                    {"role": "user", "content": prompt + "\n\n" + text[:12000]}
+                    {"role": "user", "content": prompt + "\n\n" + text[:25000]}
                 ]
             )
 
@@ -117,7 +117,7 @@ class AISummarizer:
             )
 
             response = model.generate_content(
-                prompt + "\n\n" + text[:12000],
+                prompt + "\n\n" + text[:25000],
                 generation_config=genai.types.GenerationConfig(temperature=0.3),
             )
 
@@ -141,9 +141,9 @@ class AISummarizer:
                 model=model,
                 messages=[
                     {"role": "system", "content": system_msg},
-                    {"role": "user", "content": prompt + "\n\n" + text[:12000]}
+                    {"role": "user", "content": prompt + "\n\n" + text[:25000]}
                 ],
-                max_tokens=2000,
+                max_tokens=4000,
                 temperature=0.3,
             )
 

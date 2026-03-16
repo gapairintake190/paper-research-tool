@@ -1,132 +1,130 @@
 # Paper Research Tool
 
-> 學術論文 AI 研究助手
+[![CI](https://github.com/JudyaiLab/paper-research-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/JudyaiLab/paper-research-tool/actions) [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+> AI 驅動的學術論文研究助手
 
-**🌐 Language: 繁體中文 | [English](README.md) | [한국어](README.ko.md)**
+**語言: [English](README.md) | 繁體中文 | [한국어](README.ko.md)**
 
-**Paper Research Tool** 是一套免費開源的 CLI 工具，幫助研究者用 AI 快速分析和管理學術論文。
+## 功能
 
-## 功能特色
+上傳 PDF（或貼 arXiv 網址），選 AI 引擎，就能得到結構化的學術摘要。
 
-- **PDF 解析** - 從 PDF 檔案擷取全文
-- **AI 摘要** - 透過 OpenAI / Anthropic / Google Gemini / OpenRouter 生成結構化摘要
-- **Markdown 知識庫** - 本機論文管理，含標籤、元資料、搜尋
-- **論文關聯分析** - 分析論文之間的連結
-- **三語支援** - 完整支援繁體中文、English、한국어
+- **4 家 AI** — OpenAI、Anthropic、Google Gemini、OpenRouter
+- **3 種語言** — 繁體中文、English、한국어
+- **批次模式** — 一次摘要多篇論文
+- **arXiv 支援** — 貼 arXiv 網址就能分析
+- **Web UI** — 瀏覽器介面，不用打指令
+- **知識庫** — 分析過的論文存在本機，可搜尋
+- **CLI + Web** — 終端或瀏覽器都能用
 
 ## 快速開始
 
 ### 安裝
 
 ```bash
-git clone https://github.com/JudyAILab/paper-research-tool.git
+pip install paper-research-tool
+```
+
+或從原始碼：
+
+```bash
+git clone https://github.com/JudyaiLab/paper-research-tool.git
 cd paper-research-tool
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
 ### 設定 API Key
 
-```bash
-# 選一個就好，推薦 Gemini（有免費額度）
-python3 paper_tool.py config --google-key "AI..."
-# 或
-python3 paper_tool.py config --openai-key "sk-..."
-# 或
-python3 paper_tool.py config --anthropic-key "sk-ant-..."
-# 或
-python3 paper_tool.py config --openrouter-key "sk-or-..."
-```
-
-### 設定語言
-
-在 `config.yaml` 中設定 `language`：
-
-```yaml
-# 選項: zh-TW (繁體中文, 預設) | en (English) | ko (한국어)
-language: "zh-TW"
-```
-
-或使用 `--lang` 旗標指定單次指令的語言：
+推薦用 Google Gemini（有免費額度）：
 
 ```bash
-python3 paper_tool.py --lang en summarize paper.pdf
-python3 paper_tool.py --lang ko list
+python paper_tool.py config --google-key 你的KEY
 ```
 
-### 基本使用
+其他選擇：
 
 ```bash
-# 加入論文到知識庫
-python3 paper_tool.py add paper.pdf --tags "機器學習,NLP"
-
-# AI 摘要論文
-python3 paper_tool.py summarize paper.pdf
-
-# 列出所有論文
-python3 paper_tool.py list
-
-# 搜尋論文
-python3 paper_tool.py search "transformer"
-
-# 分析兩篇論文的關聯
-python3 paper_tool.py relate paper1.md paper2.md
-
-# 顯示設定
-python3 paper_tool.py config --show
+python paper_tool.py config --openai-key 你的KEY
+python paper_tool.py config --anthropic-key 你的KEY
+python paper_tool.py config --openrouter-key 你的KEY
 ```
 
-## 指令一覽
+### 使用
 
-| 指令 | 說明 |
+```bash
+# 摘要一篇論文
+python paper_tool.py summarize paper.pdf
+
+# 批次摘要多篇
+python paper_tool.py summarize paper1.pdf paper2.pdf paper3.pdf
+
+# 用 arXiv 網址
+python paper_tool.py summarize https://arxiv.org/abs/2301.00001
+
+# 開啟 Web UI
+python paper_tool.py serve
+
+# 搜尋知識庫
+python paper_tool.py search "transformer"
+
+# 切換語言
+python paper_tool.py --lang zh-TW summarize paper.pdf
+```
+
+### Web UI
+
+安裝 Gradio 後就能用瀏覽器介面：
+
+```bash
+pip install gradio
+python paper_tool.py serve
+```
+
+打開 http://127.0.0.1:7860，上傳 PDF，選 AI 和語言，就能看結果。
+
+## 所有指令
+
+| 指令 | 功能 |
 |------|------|
-| `add <file>` | 加入 PDF 到知識庫 |
-| `summarize <file>` | AI 摘要論文 |
+| `summarize` | AI 摘要（PDF、arXiv URL，支援批次） |
+| `add` | 加入論文到知識庫 |
 | `list` | 列出所有論文 |
-| `search <query>` | 搜尋論文 |
-| `relate <p1> <p2>` | 分析論文關聯 |
-| `config` | 管理設定 |
+| `search` | 搜尋知識庫 |
+| `relate` | 分析兩篇論文的關聯 |
+| `config` | 檢視/設定 API Key |
+| `serve` | 開啟 Web UI |
 
-所有指令支援 `--lang {zh-TW,en,ko}` 覆蓋輸出語言。
+## 免費版 vs Pro
 
-## 技術棧
+| 功能 | 免費 | [Pro](https://judyailab.gumroad.com) |
+|------|:----:|:----:|
+| AI 引擎 | 4 家 | 4 家 |
+| 每次論文數 | 批次 | 批次（最多 50） |
+| 每篇字元數 | 25K | 50K |
+| 分析框架 | 3 種 | 5 種 |
+| 文獻綜述 | 基本 | 進階（自動分批） |
+| Web UI | 有 | 有（全功能） |
+| arXiv 支援 | 有 | 有 |
+| 主題分群 | — | 有 |
+| 跨論文辯論 | — | 有 |
+| 引用關係圖 | — | 有 |
+| 研究缺口偵測 | — | 有 |
+| Notion 同步 | — | 有（4 個資料庫） |
+| 知識庫 | 有 | — |
+| 語言 | 3 種 | 3 種 |
 
-- **Python 3.10+**
-- [pdfplumber](https://github.com/jsvine/pdfplumber) - PDF 擷取
-- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) / [Google Gemini](https://aistudio.google.com/) / [OpenRouter](https://openrouter.ai/) - AI 摘要
-- [Rich](https://github.com/Textualize/rich) - CLI 格式化
-- [PyYAML](https://pyyaml.org/) - 設定檔管理
+## 測試
 
-## 免費版 vs Pro 版
-
-| | 免費版（本工具） | Pro 版 |
-|---|---|---|
-| 每次分析論文數 | 1 篇 | 最多 50 篇 |
-| 每篇擷取字數 | 12K 字元 | 50K 字元 |
-| AI 供應商 | 4 家（OpenAI、Anthropic、Gemini、OpenRouter） | 4 家（相同） |
-| 分析框架 | 3 種 | 5 種（+影響力分析 +方法論評估） |
-| 主題分群 | - | ✅ AI 自動分群 |
-| 跨論文辯論 | - | ✅ 結構化辯論 |
-| 引用關係圖 | - | ✅ Mermaid 圖表 |
-| 研究缺口偵測 | - | ✅ |
-| Notion 整合 | - | ✅ 4 個資料庫 + 自動同步 |
-| PDF 支援 | ✅ | ✅ |
-| 三語輸出 | ✅ | ✅ |
-
-> **想要更多？** 請參考 [Paper Research Tool Pro](https://judyailab.gumroad.com/)。
+```bash
+pip install pytest
+pytest tests/ -v
+```
 
 ## 授權
 
-MIT License - 詳見 [LICENSE](LICENSE)
-
-## 貢獻
-
-歡迎提交 Issue 和 Pull Request！
+MIT — 見 [LICENSE](LICENSE)
 
 ---
 
-Made with ❤️ by [Judy AI Lab](https://judyailab.com) for researchers
+Made with care by [Judy AI Lab](https://judyailab.com)

@@ -5,8 +5,12 @@ Academic Paper AI Research Assistant
 Supports: zh-TW, en, ko
 """
 
+import os
+import re
 import sys
 import argparse
+import tempfile
+import urllib.request
 from pathlib import Path
 
 # Add project root to path
@@ -24,7 +28,10 @@ from rich.table import Table
 
 console = Console()
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
+
+# ── Content limit ──────────────────────────────────────────
+CONTENT_LIMIT = 25_000  # characters sent to AI
 
 
 def _init_lang(args, config):
@@ -36,6 +43,45 @@ def _init_lang(args, config):
         lang = "zh-TW"
     set_lang(lang)
     return lang
+
+
+def _resolve_source(source: str) -> str:
+    """Resolve a paper source (file path or arXiv URL) to extracted text."""
+    parser = PDFParser()
+
+    # arXiv URL → download PDF
+    arxiv_match = re.match(r"https?://arxiv\.org/abs/(\d+\.\d+)", source)
+    if arxiv_match:
+        arxiv_id = arxiv_match.group(1)
+        pdf_url = f"https://arxiv.org/pdf/{arxiv_id}.pdf"
+        console.print(f"[cyan]Downloading arXiv paper {arxiv_id}...[/cyan]")
+        tmp = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
+        try:
+            urllib.request.urlretrieve(pdf_url, tmp.name)
+            text = parser.extract_text(tmp.name)
+            return text or ""
+        finally:
+            os.unlink(tmp.name)
+
+    # Direct PDF URL
+    if source.startswith("http") and source.endswith(".pdf"):
+        console.print(f"[cyan]Downloading PDF from URL...[/cyan]")
+        tmp = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
+        try:
+            urllib.request.urlretrieve(source, tmp.name)
+            text = parser.extract_text(tmp.name)
+            return text or ""
+        finally:
+            os.unlink(tmp.name)
+
+    # Local file
+    file_path = Path(source)
+    if not file_path.exists():
+        console.print(f"[red]{t('file_not_found', path=file_path)}[/red]")
+        return ""
+
+    text = parser.extract_text(str(file_path))
+    return text or ""
 
 
 def cmd_add(args, config) -> int:
@@ -68,42 +114,50 @@ def cmd_add(args, config) -> int:
 
 
 def cmd_summarize(args, config) -> int:
-    """AI summarize paper."""
+    """AI summarize one or more papers."""
     summarizer = AISummarizer(config)
     kb = KnowledgeBase()
-
-    file_path = Path(args.file)
-    if not file_path.exists():
-        console.print(f"[red]{t('file_not_found', path=file_path)}[/red]")
-        return 1
-
-    console.print(f"[cyan]{t('extracting_text')}[/cyan]")
-    parser = PDFParser()
-    text = parser.extract_text(str(file_path))
-
-    if not text:
-        console.print(f"[red]{t('pdf_extract_fail')}[/red]")
-        return 1
-
-    console.print(f"[cyan]{t('generating_summary')}[/cyan]")
-
     pm = PromptManager()
-    prompt = pm.get_prompt("basic_summary", text[:8000])
 
-    summary = summarizer.summarize(text[:8000], prompt=prompt)
+    files = args.files
+    results = []
 
-    paper = {
-        "title": file_path.stem.replace("_", " ").replace("-", " ").title(),
-        "source": str(file_path),
-        "text": text[:5000],
-        "summary": summary,
-        "tags": args.tags.split(",") if args.tags else [],
-    }
+    for source in files:
+        source_name = Path(source).name if not source.startswith("http") else source
+        console.print(f"\n[cyan]Processing: {source_name}[/cyan]")
 
-    kb.add_paper(paper)
+        text = _resolve_source(source)
+        if not text:
+            console.print(f"[red]Skipping: could not extract text[/red]")
+            continue
 
-    console.print(f"\n[bold]{t('summary_header')}[/bold]")
-    console.print(summary)
+        console.print(f"[cyan]{t('generating_summary')}[/cyan]")
+
+        prompt = pm.get_prompt("basic_summary", text[:CONTENT_LIMIT])
+        summary = summarizer.summarize(text[:CONTENT_LIMIT], prompt=prompt)
+
+        title = source_name.replace("_", " ").replace("-", " ").replace(".pdf", "").title()
+        paper = {
+            "title": title,
+            "source": source,
+            "text": text[:5000],
+            "summary": summary,
+            "tags": args.tags.split(",") if args.tags else [],
+        }
+        kb.add_paper(paper)
+        results.append((title, summary))
+
+    if not results:
+        console.print("[red]No papers could be processed.[/red]")
+        return 1
+
+    for title, summary in results:
+        console.print(f"\n[bold]{'=' * 60}[/bold]")
+        console.print(f"[bold cyan]{title}[/bold cyan]")
+        console.print(f"[bold]{'=' * 60}[/bold]\n")
+        console.print(summary)
+
+    console.print(f"\n[green]Processed {len(results)} paper(s).[/green]")
     return 0
 
 
@@ -196,6 +250,16 @@ def cmd_config(args, config) -> int:
     return 0
 
 
+def cmd_serve(args, config) -> int:
+    """Launch Web UI."""
+    from core.web_ui import launch_web_ui
+    return launch_web_ui(
+        config,
+        host=args.host,
+        port=args.port,
+    )
+
+
 def main():
     # Pre-parse to get language for help text
     pre_parser = argparse.ArgumentParser(add_help=False)
@@ -227,9 +291,9 @@ def main():
     p_add.add_argument("file", help=c("add_file_help"))
     p_add.add_argument("--tags", "-t", help=c("add_tags_help"), default="")
 
-    # summarize
+    # summarize (now supports multiple files + arXiv URLs)
     p_sum = subparsers.add_parser("summarize", help=c("summarize_help"))
-    p_sum.add_argument("file", help=c("add_file_help"))
+    p_sum.add_argument("files", nargs="+", help="PDF files, arXiv URLs, or PDF URLs")
     p_sum.add_argument("--tags", "-t", help=c("add_tags_help"), default="")
 
     # list
@@ -253,6 +317,11 @@ def main():
     p_config.add_argument("--google-key", help=c("config_google_help"))
     p_config.add_argument("--openrouter-key", help=c("config_openrouter_help"))
 
+    # serve (Web UI)
+    p_serve = subparsers.add_parser("serve", help="Launch Web UI (requires: pip install gradio)")
+    p_serve.add_argument("--host", default="127.0.0.1", help="Host to bind (default: 127.0.0.1)")
+    p_serve.add_argument("--port", type=int, default=7860, help="Port (default: 7860)")
+
     args = parser.parse_args()
 
     if not args.command:
@@ -269,6 +338,7 @@ def main():
         "search": cmd_search,
         "relate": cmd_relate,
         "config": cmd_config,
+        "serve": cmd_serve,
     }
 
     return commands.get(args.command, lambda *_: parser.print_help())(args, config)
