@@ -1,0 +1,166 @@
+# Paper Research Tool - Prompt Templates
+# Trilingual: zh-TW / en / ko
+
+basic_summary:
+  name:
+    zh-TW: "基本摘要"
+    en: "Basic Summary"
+    ko: "기본 요약"
+  description:
+    zh-TW: "產生結構化論文摘要"
+    en: "Generate structured paper summary"
+    ko: "구조화된 논문 요약 생성"
+  prompt:
+    zh-TW: |
+      請分析以下學術論文並產生結構化摘要，包含：
+      1. 研究動機與目標（50字內）
+      2. 研究方法
+      3. 關鍵發現
+      4. 創新貢獻
+      5. 侷限性與未來方向
+
+      論文內容：
+      {text}
+    en: |
+      Please analyze the following academic paper and produce a structured summary, including:
+      1. Research motivation and objectives (under 50 words)
+      2. Research methodology
+      3. Key findings
+      4. Innovative contributions
+      5. Limitations and future directions
+
+      Paper content:
+      {text}
+    ko: |
+      다음 학술 논문을 분석하고 구조화된 요약을 작성해 주세요:
+      1. 연구 동기와 목표 (50자 이내)
+      2. 연구 방법
+      3. 주요 발견
+      4. 혁신적 기여
+      5. 한계점과 향후 방향
+
+      논문 내용:
+      {text}
+
+methods_analysis:
+  name:
+    zh-TW: "研究方法分析"
+    en: "Methods Analysis"
+    ko: "연구 방법 분석"
+  description:
+    zh-TW: "深入分析研究方法"
+    en: "In-depth analysis of research methods"
+    ko: "연구 방법의 심층 분석"
+  prompt:
+    zh-TW: |
+      請詳細分析這篇論文的研究方法：
+      1. 數據來源與收集方式
+      2. 分析方法與模型
+      3. 樣本選擇與規模
+      4. 方法論的優點
+      5. 潛在問題與偏差
+
+      論文內容：
+      {text}
+    en: |
+      Please analyze the research methods of this paper in detail:
+      1. Data sources and collection methods
+      2. Analysis methods and models
+      3. Sample selection and size
+      4. Methodological strengths
+      5. Potential issues and biases
+
+      Paper content:
+      {text}
+    ko: |
+      이 논문의 연구 방법을 자세히 분석해 주세요:
+      1. 데이터 소스와 수집 방법
+      2. 분석 방법과 모델
+      3. 샘플 선택과 규모
+      4. 방법론의 장점
+      5. 잠재적 문제와 편향
+
+      논문 내용:
+      {text}
+
+critique:
+  name:
+    zh-TW: "論文批評"
+    en: "Paper Critique"
+    ko: "논문 비평"
+  description:
+    zh-TW: "批判性分析論文"
+    en: "Critical analysis of paper"
+    ko: "논문의 비판적 분석"
+  prompt:
+    zh-TW: |
+      請對這篇論文進行批評性分析：
+      1. 結論的有效性
+      2. 方法論問題
+      3. 數據解讀的偏差
+      4. 樣本代表性
+      5. 與現有研究的比較
+
+      論文內容：
+      {text}
+    en: |
+      Please provide a critical analysis of this paper:
+      1. Validity of conclusions
+      2. Methodology issues
+      3. Data interpretation biases
+      4. Sample representativeness
+      5. Comparison with existing research
+
+      Paper content:
+      {text}
+    ko: |
+      이 논문에 대한 비판적 분석을 해 주세요:
+      1. 결론의 유효성
+      2. 방법론 문제
+      3. 데이터 해석의 편향
+      4. 샘플 대표성
+      5. 기존 연구와의 비교
+
+      논문 내용:
+      {text}
+
+key_findings:
+  name:
+    zh-TW: "關鍵發現提取"
+    en: "Key Findings Extraction"
+    ko: "주요 발견 추출"
+  description:
+    zh-TW: "提取主要研究發現"
+    en: "Extract main research findings"
+    ko: "주요 연구 발견 추출"
+  prompt:
+    zh-TW: |
+      請提取這篇論文的關鍵發現：
+      1. 主要結論（3-5點）
+      2. 每個發現的支持證據
+      3. 統計顯著性
+      4. 實用價值
+      5. 對領域的影響
+
+      論文內容：
+      {text}
+    en: |
+      Please extract the key findings from this paper:
+      1. Main conclusions (3-5 points)
+      2. Supporting evidence for each finding
+      3. Statistical significance
+      4. Practical value
+      5. Impact on the field
+
+      Paper content:
+      {text}
+    ko: |
+      이 논문의 주요 발견을 추출해 주세요:
+      1. 주요 결론 (3-5개)
+      2. 각 발견의 뒷받침 증거
+      3. 통계적 유의성
+      4. 실용적 가치
+      5. 해당 분야에 대한 영향
+
+      논문 내용:
+      {text}

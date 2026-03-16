@@ -1,163 +1,157 @@
-# 📄 Paper Research Tool — AI 論文分析工具
+# Paper Research Tool
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://python.org) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+> Academic Paper AI Research Assistant | 學術論文 AI 研究助手 | 학술 논문 AI 연구 도우미
 
-**🌐 Language: [English](README.en.md) | 繁體中文 | [한국어](README.ko.md)**
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 
-**免費開源 AI 學術論文分析工具** — 一行指令搞定文獻綜述、批判分析、研究缺口偵測、研究敘事脈絡。
+**Paper Research Tool** is a free, open-source CLI tool that helps researchers quickly analyze and manage academic papers with AI.
 
-專為碩博士生與研究人員設計。支援 Gemini（有免費額度）/ OpenAI / Claude / Ollama（本地免費）。
+## Features
 
----
+- **PDF Parsing** - Extract full text from PDF files
+- **AI Summary** - Structured summaries via OpenAI / Anthropic API
+- **Markdown Knowledge Base** - Local paper management with metadata, tags, and search
+- **Paper Relations** - Analyze connections between papers
+- **Trilingual** - Full support for 繁體中文, English, 한국어
 
-## 功能總覽
+## Quick Start
 
-| 功能 | 說明 | 限制 |
-|------|------|------|
-| 📚 文獻綜述 | AI 自動生成主題式文獻綜述 | 一次最多 3 篇 |
-| 🔍 批判分析 | 優缺點 / 方法論 / 辯論式分析 | 一次最多 3 篇 |
-| 🔬 研究缺口 | 偵測研究空白、生成研究問題 | 一次最多 3 篇 |
-| 🧭 研究敘事 | 串論文脈絡、生成論文第一章骨架 | 2-3 篇 |
-| 📄 論文查詢 | AlphaXiv / arXiv 論文速查 | 無限制 |
-| 🌐 多語言輸出 | 支援繁中 / English / 한국어 輸出 | 所有分析指令 |
-| 📝 寫作模板 | 文獻綜述、PRISMA、議論文模板 | 無限制 |
-
-> **想要更多？** [Pro 版](https://judyailab.com/products) 支援一次 50 篇、自動分群、Notion 整合、論文關聯圖。
-
----
-
-## 快速開始
-
-### 1. 安裝
+### Install
 
 ```bash
 git clone https://github.com/JudyAILab/paper-research-tool.git
 cd paper-research-tool
+python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-### 2. 設定 AI（四選一）
-
-**零成本入門 — Google Gemini（推薦新手）：**
-```bash
-# 去 https://aistudio.google.com/apikey 免費申請
-export GEMINI_API_KEY=你的key
-```
-
-**品質最佳 — OpenAI / Claude：**
-```bash
-export OPENAI_API_KEY=sk-你的key
-# 或
-export ANTHROPIC_API_KEY=sk-ant-你的key
-```
-
-**完全離線 — Ollama 本地模型：**
-```bash
-# 安裝 Ollama（https://ollama.ai）
-ollama pull llama3
-ollama serve
-```
-
-**進階 — config.yaml：**
-```bash
-cp config.example.yaml config.yaml
-# 編輯 config.yaml 填入 API Key
-```
-
-### 3. 使用
+### Set API Key
 
 ```bash
-# 檢查 AI 設定是否正確
-python paper_tool_pro.py config
-
-# 查詢論文（不需要 AI）
-python paper_tool_pro.py alphaxiv 2401.12345
-
-# 文獻綜述（預設繁體中文輸出）
-python paper_tool_pro.py synthesize --papers paper1.txt paper2.txt --topic "機器學習在教育上的應用"
-
-# 文獻綜述（英文輸出）
-python paper_tool_pro.py synthesize --papers paper1.txt paper2.txt --topic "ML in education" --lang en
-
-# 批判性分析
-python paper_tool_pro.py analyze --papers paper1.txt --framework strengths-weaknesses
-
-# 研究缺口偵測
-python paper_tool_pro.py gaps --papers paper1.txt paper2.txt --domain "自然語言處理"
-
-# 研究敘事脈絡（有方向 → 完整分析 + 論文第一章骨架）
-python paper_tool_pro.py narrative --papers paper1.txt paper2.txt --my-topic "transformer 在低資源語言的應用"
-
-# 研究敘事脈絡（沒方向 → 3 個研究切入點建議）
-python paper_tool_pro.py narrative --papers paper1.txt paper2.txt
-
-# 查看寫作模板
-python paper_tool_pro.py templates
+python3 paper_tool.py config --openai-key "sk-..."
+# or
+python3 paper_tool.py config --anthropic-key "sk-ant-..."
 ```
 
-> 📖 完整教學請看 [使用教學（繁中）](docs/GETTING_STARTED.md) | [English Guide](docs/GETTING_STARTED.en.md) | [한국어 가이드](docs/GETTING_STARTED.ko.md)
+### Set Language
 
----
+Set `language` in `config.yaml`:
 
-## 支援的 AI 模型
+```yaml
+# Options: zh-TW (繁體中文, default) | en (English) | ko (한국어)
+language: "zh-TW"
+```
 
-| 服務 | 模型 | 費用 | 優勢 |
-|------|------|------|------|
-| **Google Gemini** | gemini-2.0-flash | 有免費額度 | 零成本入門，速度最快 |
-| **OpenAI** | gpt-4o-mini | ~$0.01/次 | 品質最穩定，學術寫作首選 |
-| **Anthropic** | Claude Sonnet | ~$0.01/次 | 長文分析、深度推理最強 |
-| **Ollama** | llama3 等 | 完全免費 | 離線可用，資料不上傳 |
+Or use `--lang` flag per command:
 
----
+```bash
+python3 paper_tool.py --lang en summarize paper.pdf
+python3 paper_tool.py --lang ko list
+```
 
-## 檔案結構
+### Basic Usage
+
+```bash
+# Add paper to knowledge base
+python3 paper_tool.py add paper.pdf --tags "machine-learning,NLP"
+
+# AI summarize paper
+python3 paper_tool.py summarize paper.pdf
+
+# List all papers
+python3 paper_tool.py list
+
+# Search papers
+python3 paper_tool.py search "transformer"
+
+# Analyze relation between two papers
+python3 paper_tool.py relate paper1.md paper2.md
+
+# Show configuration
+python3 paper_tool.py config --show
+```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `add <file>` | Add PDF to knowledge base |
+| `summarize <file>` | AI summarize paper |
+| `list` | List all papers |
+| `search <query>` | Search papers |
+| `relate <p1> <p2>` | Analyze paper relations |
+| `config` | Manage configuration |
+
+All commands support `--lang {zh-TW,en,ko}` to override the output language.
+
+## Project Structure
 
 ```
 paper-research-tool/
-├── paper_tool_pro.py          # 主程式（CLI 入口）
+├── paper_tool.py          # CLI entry point
 ├── core/
-│   ├── config.py              # 設定管理
-│   ├── ai_caller.py           # AI 統一呼叫介面
-│   ├── ai_synthesizer.py      # 文獻綜述生成
-│   ├── critical_analyzer.py   # 批判性分析
-│   ├── gap_detector.py        # 研究缺口偵測
-│   ├── narrative_builder.py   # 研究敘事脈絡分析
-│   └── paper_reader.py        # 論文讀取共用模組
-├── templates/
-│   └── writing_templates.py   # 寫作模板
-├── config.example.yaml        # 設定檔範本
+│   ├── __init__.py
+│   ├── config.py          # Configuration manager
+│   ├── i18n.py            # Internationalization (zh-TW/en/ko)
+│   ├── pdf_parser.py      # PDF text extraction
+│   ├── ai_summarizer.py   # AI summary generation
+│   ├── knowledge_base.py  # Markdown knowledge base
+│   └── relation_graph.py  # Paper relation analysis
+├── prompts/
+│   ├── __init__.py
+│   ├── basic.yaml         # Trilingual prompt templates
+│   └── prompt_manager.py  # Prompt manager
+├── config.example.yaml    # Configuration template
 ├── requirements.txt
-└── docs/                      # 教學文件（中/英/韓）
+└── README.md
 ```
 
----
+## Tech Stack
 
-## 免費版 vs Pro 版
+- **Python 3.10+**
+- [pdfplumber](https://github.com/jsvine/pdfplumber) - PDF extraction
+- [OpenAI](https://openai.com/) / [Anthropic](https://www.anthropic.com/) - AI summary
+- [Rich](https://github.com/Textualize/rich) - CLI formatting
+- [PyYAML](https://pyyaml.org/) - Configuration
 
-| | 免費版（本工具） | Pro 版 |
+## Language Support
+
+All user-facing text, prompts, and AI system messages support three languages:
+
+| Feature | zh-TW | en | ko |
+|---------|-------|----|----|
+| CLI help text | ✅ | ✅ | ✅ |
+| Error messages | ✅ | ✅ | ✅ |
+| AI prompts | ✅ | ✅ | ✅ |
+| AI system message | ✅ | ✅ | ✅ |
+| Knowledge base output | ✅ | ✅ | ✅ |
+
+## Free vs Pro
+
+| | Free (this tool) | Pro |
 |---|---|---|
-| 每次分析論文數 | 最多 3 篇 | 最多 50 篇 |
-| AI 分析 | ✅ 基礎分析 | ✅ 進階深度分析 |
-| 研究敘事脈絡 | ✅ | ✅ 含自動關聯圖 |
-| 輸出格式 | Markdown 檔案 | Notion 自動整理 |
-| 論文分群 | ❌ | ✅ 自動按主題分群 |
-| 論文關聯圖 | ❌ | ✅ 視覺化關聯 |
-| 新論文監控 | ❌ | ✅ 自動追蹤 |
-| 價格 | 免費 | [查看定價](https://judyailab.com/products) |
+| Papers per analysis | 3 max | 50 max |
+| Content per paper | 15K chars | 50K chars |
+| Analysis frameworks | 3 | 5 (+impact, +methodology evaluation) |
+| Topic clustering | - | ✅ AI-powered |
+| Cross-paper debate | - | ✅ Structured |
+| Citation graph | - | ✅ Mermaid diagrams |
+| Notion integration | - | ✅ 4 databases + auto-sync |
+| PDF support | ✅ | ✅ |
+| Trilingual | ✅ | ✅ |
 
----
-
-## 使用場景
-
-- **碩博士生** — 論文寫作的文獻綜述章節、研究脈絡建構
-- **研究人員** — 快速掌握領域研究現況與缺口
-- **教授** — 評估學生論文或審稿
-- **學術寫作者** — 結構化寫作參考
-
----
+> **Want more?** Check out [Paper Research Tool Pro](https://judyailab.gumroad.com/).
 
 ## License
 
-MIT — 免費使用、修改、分享。
+MIT License - See [LICENSE](LICENSE)
 
-*Made with ❤️ by [Judy AI Lab](https://judyailab.com)*
+## Contributing
+
+Issues and Pull Requests are welcome!
+
+---
+
+Made with ❤️ by [Judy AI Lab](https://judyailab.com) for researchers
