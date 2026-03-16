@@ -2,8 +2,12 @@
 
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
+
+# Resolve project root relative to this test file
+PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
 
 
 class TestCLI:
@@ -13,7 +17,7 @@ class TestCLI:
         result = subprocess.run(
             [sys.executable, "paper_tool.py", "--version"],
             capture_output=True, text=True,
-            cwd="/home/ubuntu/projects/paper-research-tool",
+            cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
         assert "0.3.0" in result.stdout
@@ -22,7 +26,7 @@ class TestCLI:
         result = subprocess.run(
             [sys.executable, "paper_tool.py", "--help"],
             capture_output=True, text=True,
-            cwd="/home/ubuntu/projects/paper-research-tool",
+            cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
         assert "summarize" in result.stdout
@@ -32,7 +36,7 @@ class TestCLI:
         result = subprocess.run(
             [sys.executable, "paper_tool.py", "config", "--show"],
             capture_output=True, text=True,
-            cwd="/home/ubuntu/projects/paper-research-tool",
+            cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
         assert "OpenAI" in result.stdout
@@ -41,7 +45,7 @@ class TestCLI:
         result = subprocess.run(
             [sys.executable, "paper_tool.py", "list"],
             capture_output=True, text=True,
-            cwd="/home/ubuntu/projects/paper-research-tool",
+            cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
 
@@ -49,7 +53,7 @@ class TestCLI:
         result = subprocess.run(
             [sys.executable, "paper_tool.py", "search", "nonexistent_query_xyz"],
             capture_output=True, text=True,
-            cwd="/home/ubuntu/projects/paper-research-tool",
+            cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
 
@@ -57,7 +61,7 @@ class TestCLI:
         result = subprocess.run(
             [sys.executable, "paper_tool.py", "summarize", "/nonexistent/file.pdf"],
             capture_output=True, text=True,
-            cwd="/home/ubuntu/projects/paper-research-tool",
+            cwd=PROJECT_ROOT,
         )
         # Should fail gracefully
         assert result.returncode != 0 or "Error" in result.stdout or "not found" in result.stdout.lower()
@@ -66,7 +70,7 @@ class TestCLI:
         result = subprocess.run(
             [sys.executable, "paper_tool.py", "--lang", "en", "--help"],
             capture_output=True, text=True,
-            cwd="/home/ubuntu/projects/paper-research-tool",
+            cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
         assert "Paper Research Tool" in result.stdout
