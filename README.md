@@ -5,6 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 
+**🌐 Language: [繁體中文](README.zh-TW.md) | English | [한국어](README.ko.md)**
+
 **Paper Research Tool** is a free, open-source CLI tool that helps researchers quickly analyze and manage academic papers with AI.
 
 ## Features
