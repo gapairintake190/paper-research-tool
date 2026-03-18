@@ -122,7 +122,7 @@ language: en                   # zh-TW | en | ko
 | Citation graph | — | Yes |
 | Research gap detection | — | Yes |
 | Notion sync | — | Yes (4 databases) |
-| Knowledge base | Yes | — |
+| Knowledge base | Local | Notion |
 | Languages | 3 | 3 |
 
 ## Windows Users

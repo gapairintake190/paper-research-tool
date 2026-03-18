@@ -111,7 +111,7 @@ python paper_tool.py serve
 | 引用關係圖 | — | 有 |
 | 研究缺口偵測 | — | 有 |
 | Notion 同步 | — | 有（4 個資料庫） |
-| 知識庫 | 有 | — |
+| 知識庫 | 本機 | Notion |
 | 語言 | 3 種 | 3 種 |
 
 ## Windows 使用者
